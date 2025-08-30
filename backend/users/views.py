@@ -52,9 +52,9 @@ class LoginView(APIView):
  permission_classes = [AllowAny]
 
  def post(self, request):
-  username = request.data['username']
-  password = request.data['password']
-
+  username = request.data.get('username')
+  password = request.data.get('password')
+  print("Login payload received:", request.data)
   user = authenticate(username=username, password=password)
 
   if user is None:
