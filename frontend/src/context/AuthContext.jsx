@@ -23,24 +23,32 @@ const AuthProvider = ({children})=>{
   fetchMe()
  },[]);
 
- const login = async (payload)=>{
-   const { data } = await api.post("users/login/", payload);
-   localStorage.setItem("access_token", data.access);
-   setUser(data.user);
-   return data;
- }
+const login = async (form) => {
+    const res = await api.post("/users/login/", form);
+    const { access, refresh, user } = res.data;
+    localStorage.setItem("access_token", access);
+    localStorage.setItem("refresh_token", refresh);
+    setUser(user);
+
+    return res.data;
+  
+};
 
  const register = async (payload)=>{
-  const { data } = await api.post("users/register/", payload)
-  localStorage.setItem("access_token", data.access);
-  setUser(data.user)
-  return data
+  const res = await api.post("users/register/", payload)
+  const { access, refresh, user } = res.data;
+
+    localStorage.setItem("access_token", access);
+    localStorage.setItem("refresh_token", refresh);
+    setUser(user);
+    return res.data
  }
 
- const logout = async ()=>{
-  localStorage.removeItem("access_token");
-  setUser(null);
- }
+ const logout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    setUser(null);
+  };
 
  return(
   <AuthContext.Provider value={{user, loading, login, register, logout}}>

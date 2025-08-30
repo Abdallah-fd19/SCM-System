@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import api from '../api';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContext.jsx';
 import { Link } from 'react-router-dom';
 import { IoCreateOutline } from "react-icons/io5";
 import { MdDeleteOutline } from "react-icons/md";
