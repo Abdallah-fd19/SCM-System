@@ -31,7 +31,7 @@ class RegisterView(APIView):
    return Response({"error":"Username already taken"}, status=status.HTTP_400_BAD_REQUEST)
   
   user = User.objects.create_user(username=username, password=password, email=email)
-  profile = Profile.objects.create(user=user, role=role)
+  profile = Profile.objects.create(user=user, role=role or 'student')
 
   refresh = RefreshToken.for_user(user)
   response = Response({
