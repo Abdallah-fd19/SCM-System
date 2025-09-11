@@ -24,6 +24,8 @@ class EnrollmentCreateSerializer(serializers.ModelSerializer):
         fields = ['course']
 
 class AssignmentSerializer(serializers.ModelSerializer):
+    course_name = serializers.CharField(source='course.name', read_only=True)
+
     class Meta:
         model = Assignment
-        fields = "__all__"
+        fields = ['id' ,'course', 'title', 'description', 'due_date', 'created_at', 'updated_at', 'course_name']

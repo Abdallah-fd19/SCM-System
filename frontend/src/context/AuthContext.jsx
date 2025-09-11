@@ -51,7 +51,7 @@ const login = async (form) => {
   };
 
  return(
-  <AuthContext.Provider value={{user, loading, login, register, logout}}>
+  <AuthContext.Provider value={{user, loading, setLoading, login, register, logout}}>
    {children}
   </AuthContext.Provider>
  )
