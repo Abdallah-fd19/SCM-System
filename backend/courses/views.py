@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Course, Enrollment, Assignment
 from users.models import Profile
-from .serializers import CourseSerializer, EnrollmentSerializer, AssignmentSerializer
+from .serializers import CourseSerializer, EnrollmentSerializer, AssignmentSerializer, EnrollmentCreateSerializer
 
 # Create your views here. 
 
@@ -15,7 +15,12 @@ class CourseListCreateAPIView(APIView):
  permission_classes = [IsAuthenticated]
 
  def get(self, request):
-  courses = Course.objects.all()
+  if request.user.profile.role == 'teacher':
+    # Teachers see only their own courses
+    courses = Course.objects.filter(teacher=request.user.profile)
+  else:
+    # Students see all available courses
+    courses = Course.objects.all()
   serializer = CourseSerializer(courses, many=True)
   return Response(serializer.data)
  
@@ -76,22 +81,28 @@ class EnrollmentListCreateAPIView(APIView):
   permission_classes = [IsAuthenticated]
 
   def get(self, request):
-    # Students only see their enrollments
-    if request.user.profile.role=='student':
-      enrollments = Enrollment.objects.filter(student=request.user.profile)
-    else:
-      enrollments = Enrollment.objects.all()
-    serializer = EnrollmentSerializer(enrollments, many=True)
-    return Response(serializer.data)
+    try:
+      # Students only see their enrollments
+      if request.user.profile.role=='student':
+        enrollments = Enrollment.objects.filter(student=request.user.profile)
+      else:
+      # Teachers see their enrollments
+        enrollments = Enrollment.objects.filter(course__teacher=request.user.profile)
+      
+      serializer = EnrollmentSerializer(enrollments, many=True)
+      return Response(serializer.data)
+    except Exception as e:
+      return Response({"error": f"Error fetching enrollments: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
   def post(self, request):
     if request.user.profile.role!='student':
       return Response({"error":"Only students can enroll in courses"}, status=status.HTTP_403_FORBIDDEN)
 
-    serializer = EnrollmentSerializer(data=request.data)
+    serializer = EnrollmentCreateSerializer(data=request.data)
     if serializer.is_valid():
-      serializer.save(student=request.user.profile)
-      return Response(serializer.data, status=status.HTTP_201_CREATED)
+      enrollment = serializer.save(student=request.user.profile)
+      read_serializer = EnrollmentSerializer(enrollment)
+      return Response(read_serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

@@ -8,6 +8,10 @@ class Course(models.Model):
  created_at = models.DateTimeField(auto_now_add=True)
  updated_at = models.DateTimeField(auto_now=True)
 
+
+ def __str__(self):
+  return f"{self.name}"
+
 class Enrollment(models.Model):
  student = models.ForeignKey('users.Profile', on_delete=models.CASCADE, null=True, blank=True)
  course = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -18,7 +22,7 @@ class Enrollment(models.Model):
   unique_together = ('student', 'course') # prevent duplicate enrollment
 
  def __str__(self):
-  return f"{self.student.usename} -> {self.course.name}"
+  return f"{self.student.user.username} -> {self.course.name}"
  
 
 class Assignment(models.Model):
