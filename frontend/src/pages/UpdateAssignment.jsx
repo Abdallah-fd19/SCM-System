@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api";
 import Toast from "../components/Toast";
+import BackButton from "../components/BackButton";
 
 const UpdateAssignment = () => {
   const { id } = useParams();
@@ -63,7 +64,11 @@ const UpdateAssignment = () => {
   return (
     <div className="min-h-screen bg-amber-50 py-8">
       <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Update Assignment</h1>
+        <div className="flex items-center justify-between mb-4">
+          <BackButton />
+          <h1 className="text-2xl font-bold text-gray-800">Update Assignment</h1>
+          <div className="w-7" />
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-gray-700 mb-1">Title</label>

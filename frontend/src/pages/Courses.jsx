@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { IoCreateOutline } from "react-icons/io5";
 import { MdDeleteOutline } from "react-icons/md";
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
+import BackButton from '../components/BackButton';
 import Toast from '../components/Toast';
 
 const Courses = () => {
@@ -128,6 +129,13 @@ const Courses = () => {
   }
   return (
     <div className='min-h-screen bg-amber-50 flex flex-col gap-y-20 py-15 items-center'>
+      <div className='w-full max-w-6xl px-4'>
+        <div className='flex items-center justify-between mb-6'>
+          <BackButton />
+          <h1 className='text-4xl font-bold text-gray-800'>Courses</h1>
+          <div className='w-7' />
+        </div>
+      </div>
       <div className='grid grid-cols-3 gap-x-14 gap-y-14'>
         {courses.map((course) => {
           return (

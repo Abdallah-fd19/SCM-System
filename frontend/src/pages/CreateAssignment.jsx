@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import api from "../api";
 import { AuthContext } from "../context/AuthContext";
 import Toast from "../components/Toast";
+import BackButton from "../components/BackButton";
 
 const CreateAssignment = () => {
   const { user } = useContext(AuthContext);
@@ -47,7 +48,11 @@ const CreateAssignment = () => {
   return (
     <div className="min-h-screen bg-amber-50 py-8">
       <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Create Assignment</h1>
+        <div className="flex items-center justify-between mb-4">
+          <BackButton />
+          <h1 className="text-2xl font-bold text-gray-800">Create Assignment</h1>
+          <div className="w-7" />
+        </div>
 
         {user?.role !== "teacher" ? (
           <p className="text-red-600">Only teachers can create assignments.</p>

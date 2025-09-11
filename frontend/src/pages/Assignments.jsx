@@ -5,6 +5,7 @@ import { IoBookOutline, IoCalendarOutline } from "react-icons/io5";
 import { MdOutlineRemoveRedEye, MdDeleteOutline } from "react-icons/md";
 import Toast from "../components/Toast";
 import { Link } from "react-router-dom";
+import BackButton from "../components/BackButton";
 
 const Assignments = () => {
   const [assignments, setAssignments] = useState([]);
@@ -61,12 +62,14 @@ const Assignments = () => {
   return (
     <div className="min-h-screen bg-amber-50 py-8">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Assignments</h1>
-          <p className="text-gray-600 text-lg">
-            {user?.role === "student" ? "Assignments for your enrolled courses" : "Assignments in your courses"}
-          </p>
+        <div className="flex items-center justify-between mb-6">
+          <BackButton />
+          <h1 className="text-4xl font-bold text-gray-800">Assignments</h1>
+          <div className="w-7" />
         </div>
+        <p className="text-gray-600 text-lg text-center mb-6">
+          {user?.role === "student" ? "Assignments for your enrolled courses" : "Assignments in your courses"}
+        </p>
 
         {assignments.length === 0 ? (
           <div className="text-center py-16">

@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { MdOutlineRemoveRedEye, MdDeleteOutline } from "react-icons/md";
 import { IoPersonOutline, IoBookOutline, IoCalendarOutline } from "react-icons/io5";
 import Toast from "../components/Toast";
+import BackButton from "../components/BackButton";
 const Enrollments = () => {
   const [enrollments, setEnrollments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -68,15 +69,17 @@ const Enrollments = () => {
     <div className="min-h-screen bg-amber-50 py-8">
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">My Enrollments</h1>
-          <p className="text-gray-600 text-lg">
-            {user?.role === 'student' 
-              ? 'Courses you are enrolled in' 
-              : 'Students enrolled in your courses'
-            }
-          </p>
+        <div className="flex items-center justify-between mb-6">
+          <BackButton />
+          <h1 className="text-4xl font-bold text-gray-800">My Enrollments</h1>
+          <div className="w-7" />
         </div>
+        <p className="text-gray-600 text-lg text-center mb-6">
+          {user?.role === 'student' 
+            ? 'Courses you are enrolled in' 
+            : 'Students enrolled in your courses'
+          }
+        </p>
 
         {/* Enrollments Grid */}
         {enrollments.length === 0 ? (

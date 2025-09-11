@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import api from "../api";
 import { AuthContext } from "../context/AuthContext";
 import Toast from "../components/Toast";
+import BackButton from "../components/BackButton";
 
 const AssignmentDetail = () => {
   const { id } = useParams();
@@ -47,7 +48,8 @@ const AssignmentDetail = () => {
   return (
     <div className="min-h-screen bg-amber-50 py-8">
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow p-6">
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex items-center justify-between mb-4">
+          <BackButton />
           <h1 className="text-2xl font-bold text-gray-800">{assignment.title}</h1>
           {user?.role === "teacher" && (
             <Link
