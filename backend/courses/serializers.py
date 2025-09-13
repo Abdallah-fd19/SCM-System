@@ -17,7 +17,6 @@ class EnrollmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Enrollment
         fields = ['id', 'student', 'course', 'enrolled_at', 'updated_at']
-
 class EnrollmentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Enrollment

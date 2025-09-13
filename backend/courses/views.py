@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Course, Enrollment, Assignment
 from users.models import Profile
 from .serializers import CourseSerializer, EnrollmentSerializer, AssignmentSerializer, EnrollmentCreateSerializer
-
+from django.db.models import Count
 # Create your views here. 
 
 # --- Course Views ---
@@ -75,7 +75,19 @@ class CourseDetailView(APIView):
   course.delete()
   return Response(status=status.HTTP_204_NO_CONTENT)
   
+
+
+
 # --- Enrollment Views ---
+
+class EnrollmentStatistics(APIView):
+  permission_classes = [IsAuthenticated]
+
+  def get(self, request):
+      if request.user.profile.role != 'teacher':
+        return Response({"error":"Only teachers fetches course data"}, status=status.HTTP_403_FORBIDDEN)
+      enrollments = Enrollment.objects.filter(course__teacher=request.user.profile).values("course", "course__name").annotate(student_count=Count("student"))
+      return Response(enrollments, status=status.HTTP_200_OK)                
 
 class EnrollmentListCreateAPIView(APIView):
   permission_classes = [IsAuthenticated]
@@ -121,7 +133,19 @@ class DeleteEnrollment(APIView):
     enrollment.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
     
+# --- Assignment Views ---
 
+class AssignmentStatistics(APIView):
+  permission_classes = [IsAuthenticated]
+  
+  def get(self, request):
+    
+    if request.user.profile.role != 'student':
+      return Response({"error":"Only student can fetch assignment statistics"}, status=status.HTTP_403_FORBIDDEN)
+    student_enrollments = Enrollment.objects.filter(student=request.user.profile)
+    student_courses = [enrollment.course for enrollment in student_enrollments]
+    assignmets = Assignment.objects.filter(course__in=student_courses).values("course", "course__name").annotate(assignment_count=Count("id"))
+    return Response(assignmets, status=status.HTTP_200_OK)
 class AssignmentListCreate(APIView):
   permission_classes = [IsAuthenticated]
 
