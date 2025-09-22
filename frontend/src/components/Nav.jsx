@@ -37,7 +37,7 @@ const Nav = () => {
         </>
       ) : (
         <>
-          <span>({user.role}) {user.username}</span>
+          <span className="text-secondary-color">({user.role}) {user.username}</span>
           <button onClick={logout} className="flex items-center ml-3 gap-x-4 pb-4 text-cyan-700 border-b border-transparent hover:border-b-cyan-700  transition-all duration-[400ms] ">Logout <CiLogout/></button>
         </>
       )}
